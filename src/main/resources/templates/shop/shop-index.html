@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang ="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+
+<th:block th:replace="~{layout :: template('Shop')}"></th:block>
+<main>
+    <div class="grid-container">
+        <form class="filter" method="get" th:action="@{/shop/index}">
+            <table>
+                <tbody>
+                <input type="hidden" name="username" th:value="${username}">
+                <tr>
+                    <td>
+                        <input type="text" placeholder="Name ..." name="name" th:value="${name}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" placeholder="Category ..." name="category" th:value="${category}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" placeholder="Description ..." name="description" th:value="${description}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit" class="blue-button">Search</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+        <table>
+            <thead>
+            <tr>
+                <th>Action</th>
+                <th>Name</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="row:${grid}" th:object="${row}">
+                <td>
+                    <a class="blue-button add-button" href="javascript:;" th:attr="data-id=*{id}" >Add to cart</a>
+                    <a class="blue-button detail-button" href="javascript:;" th:attr="data-id=*{id}" >Detail</a>
+                </td>
+                <td th:text="*{name}"></td>
+                <td th:text="*{price}"></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="3">
+                    <div class="pagination">
+                        <div th:text="|page ${currentPage} of ${totalPages}|"></div>
+                        <div th:if="${totalPages !=0}">
+                            <a th:each="number : ${#numbers.sequence(1, totalPages)}"
+                               th:text="${number}" th:href="@{/shop/index(name=${name},category=${category},
+                               description=${description}, username=${username}, page=${number})}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+
+
+<!--Menu popup dialog untuk contact detail -->
+<div class="modal-layer">
+    <th:block th:replace="~{shop/product-detail-popup :: detailDialog}"></th:block>
+    <th:block th:replace="~{shop/addCart-popup :: formAddCartDialog}"></th:block>
+
+</div>
+<!--JAVASCRIPT BUAT POPUP DIALOG-->
+<script th:src="@{/resources/js/product/product-popup.js}"></script>
+<script th:src="@{/resources/js/shop/shop-popup.js}"></script>
+
+</body>
+</html>

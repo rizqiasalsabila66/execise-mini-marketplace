@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang ="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+
+<th:block th:replace="~{layout :: template('Shipment Index')}"></th:block>
+<main>
+    <div class="grid-container shipment">
+        <a th:href="@{/cart/purchaseAll(username=${username})}" class="blue-button create-button">Purchase All</a>
+        <table>
+            <thead>
+            <tr>
+                <th>Action</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Shipment</th>
+                <th>Seller</th>
+                <th>Total Price</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="row:${grid}" th:object="${row}">
+                <td>
+                    <a class="blue-button update-button" th:href="@{/cart/delete(username=${username}, id=*{id})}">Remove</a>
+                </td>
+                <td th:text="*{product}"></td>
+                <td th:text="*{quantity}"></td>
+                <td th:text="*{shipment}"></td>
+                <td th:text="*{seller}"></td>
+                <td th:text="*{totalPrice}"></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="6">
+                    <div class="pagination">
+                        <div th:text="|page ${currentPage} of ${totalPages}|"></div>
+                        <div th:if="${totalPages !=0}">
+                            <a th:each="number : ${#numbers.sequence(1, totalPages)}"
+                               th:text="${number}" th:href="@{/cart/index(page=${number},username=${username})}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>

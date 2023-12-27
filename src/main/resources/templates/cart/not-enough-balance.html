@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang ="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+
+<th:block th:replace="~{layout :: template('Fail Delete Book')}"></th:block>
+<main>
+  <div class="fail-container">
+    <p>Balance Anda Kurang <span th:text="${minus}"></span>. Mohon lakukan topup terlebih dahulu.</p>
+  </div>
+  <a class="blue-button" th:href="@{/cart/index(username=${username})}">Back to Cart</a>
+</main>
+
+</body>
+</html>

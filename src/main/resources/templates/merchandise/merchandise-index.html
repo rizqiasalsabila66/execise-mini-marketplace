@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang ="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+
+<th:block th:replace="~{layout :: template('Merchandise Index')}"></th:block>
+<main>
+    <div class="grid-container merchandise-index">
+        <a th:href="@{/merchandise/upsertForm(username=${username})}" class="blue-button create-button">Insert New Merchandise</a>
+        <table>
+            <thead>
+            <tr>
+                <th>action</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Discontinued</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="row:${grid}" th:object="${row}">
+                <td>
+                    <a class="blue-button" th:href="@{/merchandise/upsertForm(id=*{id},username=${username})}">Update</a>
+                    <a class="blue-button" th:href="@{/merchandise/delete(id=*{id},username=${username})}">Delete</a>
+                    <a class="blue-button detail-button" href="javascript:;" th:attr="data-id=*{id}">Info</a>
+                    <a th:if="!*{discontinued}"  th:href="@{/merchandise/discontinued(id=*{id},username=${username})}"
+                       class="blue-button">Discontinued</a>
+                </td>
+                <td th:text="*{name}"></td>
+                <td th:text="*{category}"></td>
+                <td th:text="*{discontinued} ? 'Yes' : 'No'"></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4">
+                    <div class="pagination">
+                        <div th:text="|page ${currentPage} of ${totalPages}|"></div>
+                        <div th:if="${totalPages !=0}">
+                            <a th:each="number : ${#numbers.sequence(1, totalPages)}"
+                               th:text="${number}" th:href="@{/merchandise/index(page=${number},username=${username})}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+
+<!--Menu popup dialog untuk contact detail -->
+<div class="modal-layer">
+    <th:block th:replace="~{shop/product-detail-popup :: detailDialog}"></th:block>
+</div>
+<!--JAVASCRIPT BUAT POPUP DIALOG-->
+<script th:src="@{/resources/js/product/product-popup.js}"></script>
+
+
+
+</body>
+</html>

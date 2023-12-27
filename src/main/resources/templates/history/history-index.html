@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang ="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+
+<th:block th:replace="~{layout :: template('Shop')}"></th:block>
+<main>
+    <div class="grid-container">
+        <form class="filter" method="get" th:action="@{/history/index}">
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <select name="seller">
+                            <option th:value=null>Pilih Seller</option>
+                            <option th:each="seller : ${dropdownSeller}"
+                                    th:value="${seller}" th:text="${seller}">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <select name="buyer">
+                            <option th:value=null>Pilih Buyer</option>
+                            <option th:each="buyer : ${dropdownBuyer}"
+                                    th:value="${buyer}" th:text="${buyer}">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit" class="blue-button">Search</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+        <table>
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Seller</th>
+                <th>Buyer</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Shipment</th>
+                <th>Total Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="row:${grid}" th:object="${row}">
+                <td th:text="*{date}"></td>
+                <td th:text="*{seller}"></td>
+                <td th:text="*{buyer}"></td>
+                <td th:text="*{product}"></td>
+                <td th:text="*{quantity}"></td>
+                <td th:text="*{shipment}"></td>
+                <td th:text="*{totalPrice}"></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="7">
+                    <div class="pagination">
+                        <div th:text="|page ${currentPage} of ${totalPages}|"></div>
+                        <div th:if="${totalPages !=0}">
+                            <a th:each="number : ${#numbers.sequence(1, totalPages)}"
+                               th:text="${number}" th:href="@{/history/index(seller=${seller},
+                               buyer=${buyer}, page=${number})}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>

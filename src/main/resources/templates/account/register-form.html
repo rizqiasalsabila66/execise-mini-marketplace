@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang ="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="authentication-body">
+<div class ="authentication-wrapper">
+    <header th:replace="~{layout :: account-header}"></header>
+    <main>
+        <h1>Sign Up</h1>
+        <form method="post" th:action="@{/account/register}" th:object="${dto}">
+            <div class="field-validation-error" th:errors="${dto}"></div>
+            <input type="text" th:field="*{username}" placeholder="username">
+<!--            // name harus username-->
+            <div class="field-validation-error" th:errors="*{username}"></div>
+
+            <input type="password" th:field="*{password}" placeholder="password">
+<!--            // name harus password-->
+            <div class="field-validation-error" th:errors="*{password}"></div>
+
+            <input type="password" th:field="*{passwordConfirmation}" placeholder="confirm password">
+            <div class="field-validation-error" th:errors="*{passwordConfirmation}"></div>
+
+            <input type="hidden" name="role" th:field="*{role}" th:value="${username}">
+
+            <button type="submit">Register</button>
+        </form>
+    </main>
+</div>
+</body>
+</html>

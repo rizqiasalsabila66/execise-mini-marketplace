@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang ="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+
+<th:block th:replace="~{layout :: template('Profile')}"></th:block>
+<main>
+    <div class="grid-container">
+        <div class="header-info" th:object="${dto}">
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <span>Name</span>
+                    </td>
+                    <td>
+                        <span th:text="*{name}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Role</span>
+                    </td>
+                    <td>
+                        <span th:text="*{role}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Address</span>
+                    </td>
+                    <td>
+                        <span th:text="*{address}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Balance</span>
+                    </td>
+                    <td>
+                        <span th:text="*{balance}"></span>
+                        <a th:if="*{role}=='Buyer'" class="blue-button topup-button" href="javascript:;">Top-up</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Shipment</th>
+                <th>Total Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="row:${grid}" th:object="${row}">
+                <td th:text="*{#temporals.format(date, 'dd/MM/yyyy')}"></td>
+                <td th:text="*{product}"></td>
+                <td th:text="*{quantity}"></td>
+                <td th:text="*{shipment}"></td>
+                <td th:text="*{totalPrice}"></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="5">
+                    <div class="pagination">
+                        <div th:text="|page ${currentPage} of ${totalPages}|"></div>
+                        <div th:if="${totalPages !=0}">
+                            <a th:each="number : ${#numbers.sequence(1, totalPages)}"
+                               th:text="${number}" th:href="@{/author/books(username=${username}, page=${number})}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+
+<!--Menu popup dialog untuk contact detail -->
+<div class="modal-layer">
+    <th:block th:replace="~{profile/buyer-topUp-popUp :: formTopUpDialog}"></th:block>
+</div>
+<!--JAVASCRIPT BUAT POPUP DIALOG-->
+<script th:src="@{/resources/js/buyer/buyer-popup.js}"></script>
+
+</body>
+</html>

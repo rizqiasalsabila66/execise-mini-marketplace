@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basilisk</title>
+    <link rel="icon" type="image/ico" th:href="@{/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/resources/css/normalize.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/font-awesome.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/site.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/normalize.css}">
+    <script th:src="@{/resources/js/jquery-3.6.0.js}"></script>
+</head>
+<body>
+<div  th:fragment="formAddCartDialog" class="popup-dialog form-dialog">
+    <header>
+        <a href="javascript:;" class="close-button">
+            <i class="fas fa-window-close"></i>
+        </a>
+    </header>
+    <form>
+        <table>
+            <tbody>
+            <input type="hidden" class="productId">
+            <input type="hidden" class="usernameBuyer" th:value="${username}">
+            <tr>
+                <td>Quantity</td>
+                <td>
+                    <input type="text" class="quantity">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Shipment</label>
+                </td>
+                <td>
+                    <select class="shipmentId">
+                        <option th:value="null">Pilih Shipment</option>
+                        <option th:each="option : ${dropdownShipment}"
+                                th:value="${option.value}" th:text="${option.textContent}"
+                                th:selected="${option.value == shipmentId}">
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <input type="hidden" name="username" th:value="${username}">
+            </tbody>
+        </table>
+        <button type="submit" class="blue-button">Add Cart</button>
+    </form>
+</div>
+</body>
+</html>

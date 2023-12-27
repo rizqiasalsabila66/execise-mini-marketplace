@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang ="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+
+<th:block th:replace="~{layout :: template('Shipment Index')}"></th:block>
+<main>
+    <div class="grid-container shipment">
+        <a href="javascript:;" class="blue-button create-button">Insert New Shipment</a>
+        <table>
+            <thead>
+            <tr>
+                <th>action</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Service</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="row:${grid}" th:object="${row}">
+                <td>
+                    <a class="blue-button update-button" href="javascript:;" th:attr="data-id=*{id}" >Update</a>
+                    <a class="blue-button delete-button" href="javascript:;" th:attr="data-id=*{id}" >Delete</a>
+                    <a th:if="*{service}"  th:href="@{/shipment/service(id=*{id})}"
+                       class="blue-button">Stop Service</a>
+                </td>
+                <td th:text="*{name}"></td>
+                <td th:text="*{price}"></td>
+                <td th:text="*{service} ? 'Yes' : 'No'"></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4">
+                    <div class="pagination">
+                        <div th:text="|page ${currentPage} of ${totalPages}|"></div>
+                        <div th:if="${totalPages !=0}">
+                            <a th:each="number : ${#numbers.sequence(1, totalPages)}"
+                               th:text="${number}" th:href="@{/shipment/index(page=${number})}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+
+<!--Menu popup dialog untuk contact detail -->
+<div class="modal-layer">
+    <th:block th:replace="~{shipment/shipment-upsert-popup :: formUpsertDialog}"></th:block>
+    <th:block th:replace="~{shipment/shipment-delete-popup :: DeleteDialog}"></th:block>
+</div>
+<!--JAVASCRIPT BUAT POPUP DIALOG-->
+<script th:src="@{/resources/js/shipment/shipment-popup.js}"></script>
+
+
+
+</body>
+</html>
